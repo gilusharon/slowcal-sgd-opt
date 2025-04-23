@@ -1,6 +1,6 @@
 
 
-# SLowcal-SGD: Slow Query Points Improve Local-SGD for Stochastic Convex Optimization
+# Slowcal-SGD Optimizations: Improving on Slowcal-SGD and Implementing it for Non-Convex Optimization
 
 [![NeurIPS 2024](https://img.shields.io/badge/NeurIPS-2024-blue.svg)](#) [![arXiv](https://img.shields.io/badge/arXiv-2304.04169-B31B1B.svg)](https://arxiv.org/abs/2304.04169) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -8,9 +8,9 @@
 
 ## Overview
 
-This is the official repository for **SLowcalSGD**, as presented in the paper **"SLowcal-SGD: Slow Query Points Improve Local-SGD for Stochastic Convex Optimization"**, authored by Tehila Dahan and Kfir Y. Levy, and accepted at **NeurIPS 2024**.
+This is the official repository for **SLowcalSGD Optimization**, based on the paper **"SLowcal-SGD: Slow Query Points Improve Local-SGD for Stochastic Convex Optimization"**, authored by Tehila Dahan and Kfir Y. Levy, and accepted at **NeurIPS 2024**. This repository is an extension and refactoring of the original [**SLowcalSGD**](https://github.com/dahan198/slowcal-sgd.git) repository. 
 
-This repository contains the implementation of SLowcalSGD, along with code for training, evaluation, and reproduction of the results presented in the paper.
+This repository uses the implementation of SLowcalSGD from the original repository, and adds the non-stochastic case.
 
 ---
 
@@ -45,16 +45,6 @@ By default, the code downloads the MNIST dataset automatically and stores it in 
 
 ## Running Experiments
 
-### Reproducing Paper Results
-
-To reproduce the results presented in the paper, run the following script:
-
-```bash
-python run.py
-```
-
-This script automatically runs multiple experiments with the configurations used in the paper.
-
 ### Custom Training with SLowcalSGD
 
 If you want to perform custom training using SLowcalSGD, run the following command:
@@ -83,7 +73,7 @@ You can modify the training parameters, such as the number of workers, batch siz
 
 ## Citation
 
-If you find this code useful in your research, please consider citing our paper:
+If you find this code useful in your research, please consider citing the original paper:
 
 ```
 @inproceedings{slowcal_sgd2024,
@@ -99,4 +89,3 @@ If you find this code useful in your research, please consider citing our paper:
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
