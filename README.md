@@ -19,7 +19,7 @@ This repository uses the implementation of SLowcalSGD from the original reposito
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/dahan198/slowcal-sgd.git
+git clone https://github.com/gilusharon/slowcal-sgd-opt
 cd slowcal-sgd
 ```
 

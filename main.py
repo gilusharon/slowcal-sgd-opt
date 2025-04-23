@@ -1,4 +1,5 @@
 import argparse
+from json import load
 from slowcal_sgd.dataset import DATASET_REGISTRY
 from slowcal_sgd.model import MODEL_REGISTRY
 from slowcal_sgd.optimizer import OPTIMIZER_REGISTRY
@@ -48,65 +49,63 @@ def parse_arguments():
     return parser.parse_args()
 
 
-def main():
+def get_dataloaders(data_args):
+    """Loads the dataset and prepares dataloaders for training and testing."""
+    dataset = DATASET_REGISTRY[data_args.dataset]()
+    minibatch_size = data_args.batch_size * data_args.workers_num
+    test = DataLoader(dataset.testset, batch_size=minibatch_size, shuffle=False)
+    batch_size = data_args.batch_size if data_args.optimizer in ["LocalSGD", "SLowcalSGD"] else minibatch_size
+    train = split_dataset(dataset=dataset.trainset, num_splits=data_args.workers_num, batch_size=batch_size,
+                                      seed=data_args.seed)
+    return train, test
+
+
+def get_worker_optimizer(opt_args, opt_model):
+    """Initializes the optimizer for a worker model."""
+    # Configure optimizer and parameters
+    if opt_args.optimizer in ["LocalSGD", "MinibatchSGD"]:
+        optimizer = OPTIMIZER_REGISTRY["sgd"]
+        hyperparameters = {
+            "lr": opt_args.learning_rate,
+            "momentum": 0.0,
+            "weight_decay": opt_args.weight_decay
+        }
+    else:
+        optimizer = OPTIMIZER_REGISTRY["anytime_sgd"]
+        hyperparameters = {
+            "lr": opt_args.learning_rate,
+            "gamma": opt_args.query_point_momentum,
+            "use_alpha_t": opt_args.use_alpha_t,
+            "weight_decay": opt_args.weight_decay
+        }
+    return optimizer(opt_model.parameters(), **hyperparameters)
+
+
+def init_workers(w_args, w_dataloaders):
+    workers_arr = []
+    for i in range(w_args.workers_num):
+        worker_model = MODEL_REGISTRY[args.model]().to(device)
+        worker_optimizer = get_worker_optimizer(w_args, worker_model)
+        workers_arr.append(Worker(worker_optimizer, train_dataloaders[i], worker_model, device))
+    return workers_arr
+
+
+if __name__ == "__main__":
     """Main function for initializing and running the training process."""
     args = parse_arguments()
     set_seed(args.seed)
 
     device = get_device()
     model = MODEL_REGISTRY[args.model]().to(device)
-    # Load dataset and prepare dataloaders
-    dataset = DATASET_REGISTRY[args.dataset]()
-    test_dataloader = DataLoader(dataset.testset, batch_size=args.batch_size * args.workers_num, shuffle=False)
-    if args.optimizer in ["LocalSGD", "SLowcalSGD"]:
-        train_dataloaders = split_dataset(dataset=dataset.trainset,
-                                          num_splits=args.workers_num,
-                                          batch_size=args.batch_size,
-                                          seed=args.seed,
-                                          dirichlet_alpha=args.dirichlet_alpha,
-                                          plot_distribution=True,
-                                          shuffle=True)
-    else:  # MinibatchSGD
-        train_dataloaders = split_dataset(dataset=dataset.trainset,
-                                          num_splits=args.workers_num,
-                                          batch_size=args.batch_size * args.local_iterations_num,
-                                          seed=args.seed,
-                                          dirichlet_alpha=args.dirichlet_alpha,
-                                          plot_distribution=True,
-                                          shuffle=True)
+    train_dataloaders, test_dataloader = get_dataloaders(args)
 
-    # Configure optimizer and parameters
-    if args.optimizer in ["LocalSGD", "MinibatchSGD"]:
-        optimizer = OPTIMIZER_REGISTRY["sgd"]
-        optimizer_params = {
-            "lr": args.learning_rate,
-            "momentum": 0.0,
-            "weight_decay": args.weight_decay
-        }
-    else:
-        optimizer = OPTIMIZER_REGISTRY["anytime_sgd"]
-        optimizer_params = {
-            "lr": args.learning_rate,
-            "gamma": args.query_point_momentum,
-            "use_alpha_t": args.use_alpha_t,
-            "weight_decay": args.weight_decay
-        }
+    workers = init_workers(args, w_dataloaders=train_dataloaders)
 
-    # Initialize workers
-    workers = []
-    for i in range(args.workers_num):
-        worker_model = MODEL_REGISTRY[args.model]().to(device)
-        worker_optimizer = optimizer(worker_model.parameters(), **optimizer_params)
-        workers.append(Worker(worker_optimizer, train_dataloaders[i], worker_model, device))
+    trainset_length = len(DATASET_REGISTRY[args.dataset]().trainset)
 
     # Initialize trainer
-    trainer = TRAINER_REGISTRY[args.optimizer](model, test_dataloader, args, workers,
-                                               device, trainset_length=len(dataset.trainset),
-                                               experiment_name=args.experiment_name)
+    trainer = TRAINER_REGISTRY[args.optimizer](model, test_dataloader, args, workers, device,
+                                               trainset_length=trainset_length, experiment_name=args.experiment_name)
 
     # Start training
     trainer.train(epoch_num=args.epoch_num, eval_interval=args.eval_interval)
-
-
-if __name__ == "__main__":
-    main()
