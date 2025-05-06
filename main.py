@@ -12,39 +12,18 @@ from slowcal_sgd.trainer import TRAINER_REGISTRY
 def parse_arguments():
     """Parses command-line arguments for the training script."""
     parser = argparse.ArgumentParser(description="Training script for synchronous Byzantine machine learning.")
-
-    # Argument definitions
-    parser.add_argument('--workers_num', type=int, default=16,
-                        help='Number of workers used for training.')
-    parser.add_argument('--config_folder_path', type=str, default='./config',
-                        help='Path to the configuration folder.')
-    parser.add_argument('--dataset', type=str, default='mnist', choices=['mnist'],
-                        help='Dataset to be used.')
-    parser.add_argument('--model', type=str, default='logistic_regression', choices=MODEL_REGISTRY.keys(),
-                        help='Model architecture to be used.')
-    parser.add_argument('--epoch_num', type=int, default=1, help='Number of epochs for training.')
-    parser.add_argument('--eval_interval', type=int, default=1,
-                        help='Interval (in epochs) for evaluation.')
-    parser.add_argument('--local_iterations_num', type=int, default=64,
-                        help='Number of local iterations per worker.')
-    parser.add_argument('--optimizer', type=str, default='SLowcalSGD',
-                        choices=['LocalSGD', 'SLowcalSGD', 'MinibatchSGD'],
-                        help='Optimizer to be used for training.')
-    parser.add_argument('--learning_rate', type=float,
-                        default=0.1, help='Learning rate for the optimizer.')
-    parser.add_argument('--use_alpha_t', action='store_true',
-                        help='Enable use of alpha_t=t in the optimizer.')
-    parser.add_argument('--query_point_momentum', type=float, default=0.1,
-                        help='Fixed momentum for the query point if alpha_t is not used.')
-    parser.add_argument('--batch_size', type=int, default=4, help='Batch size for training.')
-    parser.add_argument('--seed', type=int, default=3, help='Random seed for reproducibility.')
-    parser.add_argument('--use_wandb', action='store_true', help='Enable logging with Weights & Biases.')
-    parser.add_argument('--weight_decay', type=float, default=0.0, help='Weight decay for the optimizer.')
-    parser.add_argument('--experiment_name', type=str,
-                        help='Name of the experiment for logging and identification.')
-    parser.add_argument('--dirichlet_alpha', type=float, default=None,
-                        help='Alpha parameter for Dirichlet distribution to control data heterogeneity among workers. '
-                             'If set, data will be sampled non-uniformly across workers based on this parameter.')
+    with open("arguments.json", "r") as f:
+        all_args = load(f)["arguments"]
+    for arg in all_args:
+        name = arg["name"]
+        del arg["name"]
+        if "type" in arg:
+            arg_type = eval(arg["type"])
+            del arg["type"]
+            if type:
+                parser.add_argument(f"--{name}", type=arg_type, **arg)
+        else:
+            parser.add_argument(f"--{name}", **arg)
 
     return parser.parse_args()
 
