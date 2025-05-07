@@ -3,6 +3,9 @@ import numpy as np
 import random
 import inspect
 import matplotlib.pyplot as plt
+import csv
+import json
+from os import path, listdir
 from torch.utils.data import Subset, DataLoader
 from sklearn.model_selection import StratifiedKFold
 import seaborn as sns
@@ -178,3 +181,102 @@ def get_device():
     if torch.backends.mps.is_available():
         return torch.device('mps')
     return torch.device('cpu')
+
+
+def check_for_invalid_folders(results_dir: str = "results"):
+    """
+    Checks for invalid folder names in the results directory. Valid folders should be named 'run' followed by a number.
+    Raises an error if any invalid folder names are found.
+    Args:
+        results_dir (str): The results folder to verify.
+    """
+    if not path.exists(results_dir):
+        raise FileNotFoundError(f"Results folder: {results_dir} not found.")
+    dirs = listdir(results_dir)
+    if not dirs:
+        raise FileNotFoundError("Results folder is empty. Please run the training script first.")
+    for d in dirs:
+        try:
+            assert d[:3] == "run"
+            int(d[3:])
+        except (ValueError, AssertionError):
+            raise ValueError(f"Invalid folder name {d} found in results folder. Did you change anything manually?")
+
+
+def plot_from_path(results_dir, run_dir, axes, params: list = None):
+    """
+    Reads a CSV file and plots the test loss and accuracy from the results.
+
+    Args:
+        f (file): The file object to read from.
+        axes (matplotlib.axes.Axes): The axes to plot on.
+        params (list): Parameters for the plot label.
+    """
+    test_loss = []
+    test_accuracy = []
+    with open(path.join(results_dir, run_dir, "results.csv"), "r", newline='') as f:
+        reader = csv.DictReader(f)
+        for entry in reader:
+            test_loss.append(float(entry["Test Loss"]))
+            test_accuracy.append(float(entry["Test Accuracy"]))
+    iterations = np.arange(len(test_loss))
+    label = run_dir if params is None else ", ".join(params)
+    axes[0].plot(iterations, test_loss, label=label)
+    axes[1].plot(iterations, test_accuracy, label=label)
+
+
+def verify_params(params: list):
+    with open("arguments.json", "r") as f:
+        all_args = json.load(f)
+    for param in params:
+        assert(param in all_args), f"Parameter {param} not found in arguments.json. Please check the parameter name."
+
+
+def get_plots_dirs(results_dir: str, params: list) -> list:
+    """
+    Returns a list of the directories of the most recent experiments that have a unique combination of parameters.
+    Args:
+        results_dir (str): The results folder to check.
+        params (dict): The parameters to filter the directories by.
+    """
+    to_plot = []
+    seen = []
+    # Sort experiments from most recent to oldest
+    for d in sorted(listdir(results_dir), key=lambda x: -int(x[3:])):
+        with open(path.join(results_dir, d, "params.json"), "r", newline='') as f:
+            params_dict = json.load(f)
+            for param in params_dict:
+                if (params is not None) and (param not in params):
+                    del params_dict[param]
+            if params_dict in seen:
+                continue
+            seen.append(params_dict)
+            to_plot.append(d)
+    return to_plot
+
+
+def plot_results(params: list = None, experiment_name: str = None):
+    """
+    Plots the data from the results folder as a line graph. Graph includes test loss and test accuracy and
+    always uses the most recent results.
+    Args:
+        params (list of strings): Which parameter combination does the function consider a distinct experiment to graph?
+        If two experiments are identical regarding the parameters on the list, only the most recent one will be graphed.
+        experiment_name (str): Used to determine the results folder. Defaults to 'results' if None.
+    """
+    results_dir = 'results' if experiment_name is None else f'results-{experiment_name}'
+    check_for_invalid_folders(results_dir)
+    if params is not None:
+        verify_params(params)
+
+    plot, axes = plt.subplots(nrows=2, ncols=1)
+    plot.tight_layout()
+
+    for d in get_plots_dirs(results_dir, params):
+        plot_from_path(results_dir, d, axes, params=params)
+
+    axes[0].set_title("Test Loss")
+    axes[1].set_title("Test Accuracy")
+    axes[0].legend()
+    axes[1].legend()
+    plt.show()
