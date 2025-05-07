@@ -1,114 +1,95 @@
 {
-  "arguments": [
-    {
-      "name": "workers_num",
-      "type": "int",
-      "default": 16,
-      "help": "Number of workers used for training."
-    },
-    {
-      "name": "config_folder_path",
-      "type": "str",
-      "default": "./config",
-      "help": "Path to the configuration folder."
-    },
-    {
-      "name": "dataset",
-      "type": "str",
-      "default": "mnist",
-      "choices": [
-        "mnist"
-      ],
-      "help": "Dataset to be used."
-    },
-    {
-      "name": "model",
-      "type": "str",
-      "default": "logistic_regression",
-      "choices": [
-        "logistic_regression",
-        "simple_conv"
-      ],
-      "help": "Model architecture to be used."
-    },
-    {
-      "name": "epoch_num",
-      "type": "int",
-      "default": 1,
-      "help": "Number of epochs for training."
-    },
-    {
-      "name": "eval_interval",
-      "type": "int",
-      "default": 1,
-      "help": "Interval (in epochs) for evaluation."
-    },
-    {
-      "name": "local_iterations_num",
-      "type": "int",
-      "default": 64,
-      "help": "Number of local iterations per worker."
-    },
-    {
-      "name": "optimizer",
-      "type": "str",
-      "default": "SLowcalSGD",
-      "choices": [
-        "LocalSGD",
-        "SLowcalSGD",
-        "MinibatchSGD"
-      ],
-      "help": "Optimizer to be used for training."
-    },
-    {
-      "name": "learning_rate",
-      "type": "float",
-      "default": 0.1,
-      "help": "Learning rate for the optimizer."
-    },
-    {
-      "name": "use_alpha_t",
-      "action" : "store_true",
-      "help": "Enable use of alpha_t=t in the optimizer."
-    },
-    {
-      "name": "query_point_momentum",
-      "type": "float",
-      "default": 0.1,
-      "help": "Fixed momentum for the query point if alpha_t is not used."
-    },
-    {
-      "name": "batch_size",
-      "type": "int",
-      "default": 4,
-      "help": "Batch size for training."
-    },
-    {
-      "name": "seed",
-      "type": "int",
-      "default": 3,
-      "help": "Random seed for reproducibility."
-    },
-    {
-      "name": "use_wandb",
-      "action" : "store_true",
-      "help": "Enable logging with Weights & Biases."
-    },
-    {
-      "name": "weight_decay",
-      "type": "float",
-      "default": 0.0,
-      "help": "Weight decay for the optimizer."
-    },
-    {
-      "name": "experiment_name",
-      "type": "str",
-      "help": "Name of the experiment for logging and identification."
-    },
-    {
-      "name": "dirichlet_alpha",
-      "type": "float",
-      "help": "Alpha parameter for Dirichlet distribution to control data heterogeneity among workers. If set, data will be sampled non-uniformly across workers based on this parameter."
-    }
-  ]
+  "workers_num": {
+    "type": "int",
+    "default": 16,
+    "help": "Number of workers used for training."
+  },
+  "config_folder_path": {
+    "type": "str",
+    "default": "./config",
+    "help": "Path to the configuration folder."
+  },
+  "dataset": {
+    "type": "str",
+    "default": "mnist",
+    "choices": [
+      "mnist"
+    ],
+    "help": "Dataset to be used."
+  },
+  "model": {
+    "type": "str",
+    "default": "logistic_regression",
+    "choices": [
+      "logistic_regression",
+      "simple_conv"
+    ],
+    "help": "Model architecture to be used."
+  },
+  "epoch_num": {
+    "type": "int",
+    "default": 1,
+    "help": "Number of epochs for training."
+  },
+  "eval_interval": {
+    "type": "int",
+    "default": 1,
+    "help": "Interval (in epochs) for evaluation."
+  },
+  "local_iterations_num": {
+    "type": "int",
+    "default": 64,
+    "help": "Number of local iterations per worker."
+  },
+  "optimizer": {
+    "type": "str",
+    "default": "SLowcalSGD",
+    "choices": [
+      "LocalSGD",
+      "SLowcalSGD",
+      "MinibatchSGD"
+    ],
+    "help": "Optimizer to be used for training."
+  },
+  "learning_rate": {
+    "type": "float",
+    "default": 0.1,
+    "help": "Learning rate for the optimizer."
+  },
+  "use_alpha_t": {
+    "action" : "store_true",
+    "help": "Enable use of alpha_t=t in the optimizer."
+  },
+  "query_point_momentum": {
+    "type": "float",
+    "default": 0.1,
+    "help": "Fixed momentum for the query point if alpha_t is not used."
+  },
+  "batch_size": {
+    "type": "int",
+    "default": 4,
+    "help": "Batch size for training."
+  },
+  "seed": {
+    "type": "int",
+    "default": 3,
+    "help": "Random seed for reproducibility."
+  },
+  "use_wandb": {
+    "action" : "store_true",
+    "help": "Enable logging with Weights & Biases."
+  },
+  "weight_decay": {
+    "type": "float",
+    "default": 0.0,
+    "help": "Weight decay for the optimizer."
+  },
+  "experiment_name": {
+    "type": "str",
+    "help": "Name of the experiment for logging and identification."
+  },
+  "dirichlet_alpha": {
+    "type": "float",
+    "help": "Alpha parameter for Dirichlet distribution to control data heterogeneity among workers. If set, data will be sampled non-uniformly across workers based on this parameter."
+  }
 }

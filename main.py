@@ -13,17 +13,14 @@ def parse_arguments():
     """Parses command-line arguments for the training script."""
     parser = argparse.ArgumentParser(description="Training script for synchronous Byzantine machine learning.")
     with open("arguments.json", "r") as f:
-        all_args = load(f)["arguments"]
-    for arg in all_args:
-        name = arg["name"]
-        del arg["name"]
+        all_args = load(f)
+    for arg_name, arg in all_args.items():
         if "type" in arg:
             arg_type = eval(arg["type"])
             del arg["type"]
-            if type:
-                parser.add_argument(f"--{name}", type=arg_type, **arg)
+            parser.add_argument(f"--{arg_name}", type=arg_type, **arg)
         else:
-            parser.add_argument(f"--{name}", **arg)
+            parser.add_argument(f"--{arg_name}", **arg)
 
     return parser.parse_args()
 
