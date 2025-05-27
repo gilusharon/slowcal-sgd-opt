@@ -1,0 +1,18 @@
+{
+  "seeds":[1, 2, 3],
+  "batch_sizes":[1],
+  "worker_counts":[16, 32, 64],
+  "local_iteration_nums":[4, 8, 16, 32, 64],
+  "optimizers":["SLowcalSGD", "LocalSGD", "MinibatchSGD"],
+  "learning_rates":{"SLowcalSGD": 0.01, "LocalSGD": 0.01, "MinibatchSGD": 0.1},
+
+  "config_folder_path":"./config",
+  "dataset":"mnist",
+  "model":"simple_conv",
+  "num_epochs":1,
+  "eval_interval":20,
+  "use_alpha_t": false,
+  "use_wandb": false,
+  "weight_decay":0.0,
+  "experiment_name":"SLowcalSGD on simple_conv"
+}
