@@ -62,7 +62,7 @@ def init_workers(w_args, w_dataloaders):
     for i in range(w_args.workers_num):
         worker_model = MODEL_REGISTRY[args.model]().to(device)
         worker_optimizer = get_worker_optimizer(w_args, worker_model)
-        workers_arr.append(Worker(worker_optimizer, train_dataloaders[i], worker_model, device))
+        workers_arr.append(Worker(worker_optimizer, w_dataloaders[i], worker_model, device))
     return workers_arr
 
 
