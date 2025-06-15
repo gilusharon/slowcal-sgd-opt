@@ -1,0 +1,18 @@
+{
+  "seeds":[1],
+  "batch_sizes":[1],
+  "worker_counts":[16],
+  "local_iteration_nums":[4],
+  "optimizers":["SLowcalSGD"],
+  "learning_rates":{"SLowcalSGD": 0.05},
+
+  "config_folder_path":"./config",
+  "dataset":"mnist",
+  "model":"simple_conv",
+  "num_epochs":1,
+  "eval_interval":20,
+  "use_alpha_t": false,
+  "use_wandb": true,
+  "weight_decay":0.0,
+  "experiment_name":"simple_conv lr=0.05"
+}

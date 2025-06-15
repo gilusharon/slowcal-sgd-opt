@@ -22,7 +22,6 @@ def run_experiment(config: dict):
                             '--batch_size', str(batch_size),
                             '--seed', str(seed),
                             '--weight_decay', str(config["weight_decay"]),
-                            '--dirichlet_alpha', '0.1',
                             '--experiment_name', config["experiment_name"]
                         ]
 
