@@ -31,7 +31,6 @@ class SimpleConv(nn.Module):
         self._c1 = nn.Conv2d(1, 20, kernel_size=5, stride=1)
         self._c2 = nn.Conv2d(20, 50, kernel_size=5, stride=1)
         self._f1 = nn.Linear(800, 50)
-        self._bn = nn.BatchNorm1d(50)
         self._f2 = nn.Linear(50, 10)
 
     def forward(self, x):
@@ -61,7 +60,7 @@ class SimpleConv(nn.Module):
         x = x.view(-1, 800)
 
         # Apply the first fully connected layer with batch normalization and ReLU activation
-        x = F.relu(self._bn(self._f1(x)))
+        x = F.relu(self._f1(x))
 
         # Apply the final fully connected layer for classification
         x = self._f2(x)

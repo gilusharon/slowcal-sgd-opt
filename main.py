@@ -28,7 +28,7 @@ def parse_arguments():
 def get_dataloaders(data_args):
     """Loads the dataset and prepares dataloaders for training and testing."""
     dataset = DATASET_REGISTRY[data_args.dataset]()
-    minibatch_size = data_args.batch_size * data_args.workers_num
+    minibatch_size = data_args.batch_size * data_args.local_iterations_num
     test = DataLoader(dataset.testset, batch_size=minibatch_size, shuffle=False)
     batch_size = data_args.batch_size if data_args.optimizer in ["LocalSGD", "SLowcalSGD"] else minibatch_size
     train = split_dataset(dataset=dataset.trainset, num_splits=data_args.workers_num, batch_size=batch_size,
@@ -62,7 +62,7 @@ def init_workers(w_args, w_dataloaders):
     for i in range(w_args.workers_num):
         worker_model = MODEL_REGISTRY[args.model]().to(device)
         worker_optimizer = get_worker_optimizer(w_args, worker_model)
-        workers_arr.append(Worker(worker_optimizer, train_dataloaders[i], worker_model, device))
+        workers_arr.append(Worker(worker_optimizer, w_dataloaders[i], worker_model, device))
     return workers_arr
 
 
