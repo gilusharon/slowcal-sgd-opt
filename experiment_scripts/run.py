@@ -1,4 +1,7 @@
 import subprocess
+import sys
+import json
+from os import path
 
 # Iterate over parameter combinations and execute commands
 def run_experiment(config: dict):
@@ -33,3 +36,13 @@ def run_experiment(config: dict):
 
                         # Execute the command
                         subprocess.run(command, check=True)
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        raise ValueError("Please provide a config file")
+    cfg_path = sys.argv[1]
+    with open(cfg_path, 'r') as f:
+        cfg = json.load(f)
+
+    run_experiment(cfg)
