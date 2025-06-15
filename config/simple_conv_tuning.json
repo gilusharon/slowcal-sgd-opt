@@ -4,7 +4,7 @@
   "worker_counts":[16],
   "local_iteration_nums":[4],
   "optimizers":["SLowcalSGD"],
-  "learning_rates":{"SLowcalSGD": 0.05},
+  "learning_rates":{"SLowcalSGD": 0.1},
 
   "config_folder_path":"./config",
   "dataset":"mnist",
@@ -14,5 +14,5 @@
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"simple_conv lr=0.05"
+  "experiment_name":"simple_conv_tuning_lr_0.1"
 }

@@ -1,6 +1,6 @@
 .idea/
 data/
-results/
+results*
 slowcal_sgd/__pycache__/
 slowcal_sgd/*/__pycache__/
 experiment_scripts/__pycache__/
