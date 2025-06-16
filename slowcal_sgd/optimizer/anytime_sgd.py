@@ -14,7 +14,7 @@ class AnyTimeSGD(Optimizer):
     - w (list): A deep copy of parameter groups for maintaining intermediate states during updates.
     """
 
-    def __init__(self, params, lr=0.01, gamma=0.9, use_alpha_t=False, weight_decay=0.0):
+    def __init__(self, params, lr=0.01, gamma=0.1, use_alpha_t=False, weight_decay=0.0):
         """
         Initializes the AnyTimeSGD optimizer.
 
