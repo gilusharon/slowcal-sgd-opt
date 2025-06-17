@@ -39,9 +39,10 @@ class SyncTrainer(Trainer):
                 project=project,
                 entity=self.wandb_conf["entity"],
                 name=(
-                    f"{self.params['optimizer']}--{self.params['dataset']}--{self.params['model']}"
-                    f"--LR: {self.params['learning_rate']}--Seed: {self.params['seed']}"
-                    f"--Batch: {self.params['batch_size']}--Workers: {self.params['workers_num']}"
+                    f"{self.params['optimizer']}"
+                    f"--LR: {self.params['learning_rate']}"
+                    f"--Workers: {self.params['workers_num']}"
+                    f"--LIN: {self.params['local_iterations_num']}"
                 )
             )
             self.wandb.config.update(self.params)
