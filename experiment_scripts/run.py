@@ -11,7 +11,7 @@ def run_experiment(config: dict):
                 for local_iteration_num in config["local_iteration_nums"]:
                     for optimizer in config["optimizers"]:
                         for learning_rate in config["learning_rates"][optimizer]:
-                            eval_interval = int((2 * 20 * 16 * 4) // (worker_count * local_iteration_num))
+                            eval_interval = int((2 * 20 * 16 * 4 * config["num_epochs"]) // (worker_count * local_iteration_num))
 
                             # Construct the command
                             command = [
