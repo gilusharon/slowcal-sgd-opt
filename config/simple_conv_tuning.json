@@ -2,16 +2,16 @@
   "seeds":[1],
   "batch_sizes":[1],
   "worker_counts":[32],
-  "local_iteration_nums":[32],
+  "local_iteration_nums":[4, 8, 16],
   "optimizers":["SLowcalSGD"],
-  "learning_rates":{"SLowcalSGD": [0.03]},
+  "learning_rates":{"SLowcalSGD": [0.01]},
 
   "config_folder_path":"./config",
   "dataset":"mnist",
   "model":"simple_conv",
-  "num_epochs":1,
+  "num_epochs":5,
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"test_equation4"
+  "experiment_name":"Slowcal_LR_0.01_W_32_LIN_4_8_16_Epochs_5"
 }
