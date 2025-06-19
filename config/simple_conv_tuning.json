@@ -2,16 +2,16 @@
   "seeds":[1],
   "batch_sizes":[1],
   "worker_counts":[32],
-  "local_iteration_nums":[64],
-  "optimizers":["LocalSGD"],
-  "learning_rates":{"LocalSGD": [0.03]},
+  "local_iteration_nums":[4, 8, 16, 32, 64],
+  "optimizers":["MinibatchSGD"],
+  "learning_rates":{"MinibatchSGD": [0.03, 0.1, 0.3]},
 
   "config_folder_path":"./config",
   "dataset":"mnist",
   "model":"simple_conv",
-  "num_epochs":4,
+  "num_epochs":5,
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"LocalSGD_W_32_LIN_64_Epochs_4"
+  "experiment_name":"MinibatchSGD_W_32_LIN_4_8_16_32_64_Epochs_5"
 }
