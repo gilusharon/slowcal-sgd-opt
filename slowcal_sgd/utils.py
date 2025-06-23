@@ -169,6 +169,14 @@ def filter_valid_args(object_class, **kwargs):
     return filtered_kwargs
 
 
+def proj(w, rad=1):
+    norm_w = torch.norm(w)  # Compute the Euclidean norm of the weights
+    if norm_w < rad:
+        return w  # No projection needed if norm is within the radius
+    else:
+        return (w / norm_w) * rad  # Project onto the ball of radius `rad
+
+
 def get_device():
     """
     Returns the appropriate computing device (CPU, CUDA, or MPS) based on availability.

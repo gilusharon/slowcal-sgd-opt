@@ -4,6 +4,7 @@ TRAINER_REGISTRY = {
     'LocalSGD': LocalSGD,
     'MinibatchSGD': LocalSGD,
     'SLowcalSGD': SLowcalSGD,
+    'SLowcalMuSquared': SLowcalSGD
 }
 
 

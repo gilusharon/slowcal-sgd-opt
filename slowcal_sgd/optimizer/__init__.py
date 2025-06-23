@@ -1,10 +1,9 @@
 from torch.optim import SGD
 from .anytime_sgd import AnyTimeSGD
-
+from .mu2sgd import Mu2SGD
 
 OPTIMIZER_REGISTRY = {
     'sgd': SGD,
     'anytime_sgd': AnyTimeSGD,
+    'mu2sgd': Mu2SGD
 }
-
-

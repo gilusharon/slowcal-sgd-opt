@@ -39,21 +39,30 @@ def get_dataloaders(data_args):
 def get_worker_optimizer(opt_args, opt_model):
     """Initializes the optimizer for a worker model."""
     # Configure optimizer and parameters
-    if opt_args.optimizer in ["LocalSGD", "MinibatchSGD"]:
-        optimizer = OPTIMIZER_REGISTRY["sgd"]
-        hyperparameters = {
-            "lr": opt_args.learning_rate,
-            "momentum": 0.0,
-            "weight_decay": opt_args.weight_decay
-        }
-    else:
-        optimizer = OPTIMIZER_REGISTRY["anytime_sgd"]
-        hyperparameters = {
-            "lr": opt_args.learning_rate,
-            "gamma": opt_args.query_point_momentum,
-            "use_alpha_t": opt_args.use_alpha_t,
-            "weight_decay": opt_args.weight_decay
-        }
+    match opt_args.optimizer:
+        case "LocalSGD", "MinibatchSGD":
+            optimizer = OPTIMIZER_REGISTRY["sgd"]
+            hyperparameters = {
+                "lr": opt_args.learning_rate,
+                "momentum": 0.0,
+                "weight_decay": opt_args.weight_decay
+            }
+        case "SLowcalSGD":
+            optimizer = OPTIMIZER_REGISTRY["anytime_sgd"]
+            hyperparameters = {
+                "lr": opt_args.learning_rate,
+                "gamma": opt_args.query_point_momentum,
+                "use_alpha_t": opt_args.use_alpha_t,
+                "weight_decay": opt_args.weight_decay
+            }
+        case "SLowcalMuSquared":
+            optimizer = OPTIMIZER_REGISTRY["mu2sgd"]
+            hyperparameters = {
+                "lr": opt_args.learning_rate,
+                "gamma": opt_args.query_point_momentum,
+                "use_alpha_t": opt_args.use_alpha_t,
+                "weight_decay": opt_args.weight_decay
+            }
     return optimizer(opt_model.parameters(), **hyperparameters)
 
 
