@@ -1,17 +1,17 @@
 {
-  "seeds":[1],
+  "seeds":[1, 2, 3],
   "batch_sizes":[1],
-  "worker_counts":[64],
+  "worker_counts":[16],
   "local_iteration_nums":[4, 8, 16, 32, 64],
-  "optimizers":["MinibatchSGD"],
-  "learning_rates":{"MinibatchSGD": [0.03, 0.1, 0.3]},
+  "optimizers":["SLowcalSGD"],
+  "learning_rates":{"SLowcalSGD": [0.01, 0.03]},
 
   "config_folder_path":"./config",
   "dataset":"mnist",
   "model":"simple_conv",
-  "num_epochs":10,
+  "num_epochs":3,
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"MinibatchSGD_W_64_LIN_4_8_16_32_64_Epochs_10"
+  "experiment_name":"SLowcalSGD_W_16_AllSeeds_3Epochs_Final"
 }
