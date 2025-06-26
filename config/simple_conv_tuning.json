@@ -13,5 +13,5 @@
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"MinibatchSGD_W_16_32_AllSeeds_3Epochs_Final"
+  "experiment_name":"test_kaggle"
 }
