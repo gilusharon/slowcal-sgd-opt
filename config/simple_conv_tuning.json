@@ -1,10 +1,10 @@
 {
   "seeds":[1, 2, 3],
   "batch_sizes":[1],
-  "worker_counts":[32],
+  "worker_counts":[16, 32],
   "local_iteration_nums":[4, 8, 16, 32, 64],
-  "optimizers":["SLowcalSGD"],
-  "learning_rates":{"SLowcalSGD": [0.01]},
+  "optimizers":["LocalSGD"],
+  "learning_rates":{"LocalSGD": [0.01, 0.03]},
 
   "config_folder_path":"./config",
   "dataset":"mnist",
@@ -13,5 +13,5 @@
   "use_alpha_t": false,
   "use_wandb": true,
   "weight_decay":0.0,
-  "experiment_name":"SLowcalSGD_W_32_AllSeeds_3Epochs_Final"
+  "experiment_name":"LocalSGD_W_16_32_AllSeeds_3Epochs_Final"
 }
