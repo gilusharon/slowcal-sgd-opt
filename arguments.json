@@ -47,7 +47,8 @@
     "choices": [
       "LocalSGD",
       "SLowcalSGD",
-      "MinibatchSGD"
+      "MinibatchSGD",
+      "SLowcalMuSquared"
     ],
     "help": "Optimizer to be used for training."
   },

@@ -2,7 +2,7 @@
 
 # Slowcal-SGD Optimizations: Improving on Slowcal-SGD and Implementing it for Non-Convex Optimization
 
-[![NeurIPS 2024](https://img.shields.io/badge/NeurIPS-2024-blue.svg)](#) [![arXiv](https://img.shields.io/badge/arXiv-2304.04169-B31B1B.svg)](https://arxiv.org/abs/2304.04169) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![arXiv](https://img.shields.io/badge/arXiv-2304.04169-B31B1B.svg)](https://arxiv.org/abs/2304.04169) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
@@ -67,7 +67,7 @@ You can modify the training parameters, such as the number of workers, batch siz
   entity: "your-wandb-username"
   ```
 
-- **Metrics**: Training metrics, such as loss and accuracy, are logged during the training process and saved in the results directory.
+- **Metrics**: Training metrics, such as loss and accuracy, are logged during the training process and saved in the 'results' directory.
 
 ---
 
