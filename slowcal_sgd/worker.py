@@ -7,7 +7,7 @@ class Worker:
     using a given model, optimizer, and dataloader.
     """
 
-    def __init__(self, optimizer, dataloader, model, device):
+    def __init__(self, optimizer, dataloader, model, device, is_storm=False):
         """
         Initializes the Worker instance.
 
@@ -23,6 +23,7 @@ class Worker:
         self.model = model.to(device)
         self.criterion = nn.CrossEntropyLoss()
         self.data_iterator = iter(self.dataloader)  # Initialize the data iterator
+        self.is_storm = is_storm
 
     def step(self):
         """
@@ -50,5 +51,12 @@ class Worker:
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
+
+        if self.is_storm:
+            outputs = self.model(images)
+            loss = self.criterion(outputs, labels)
+            self.optimizer.zero_grad()
+            loss.backward()
+            self.optimizer.compute_estimator()
 
         return loss.item()

@@ -5,5 +5,5 @@ from .mu2_sgd import Mu2SGD
 OPTIMIZER_REGISTRY = {
     'sgd': SGD,
     'anytime_sgd': AnyTimeSGD,
-    'mu2sgd': Mu2SGD
+    'mu2_sgd': Mu2SGD
 }

@@ -105,9 +105,11 @@ class Mu2SGD(Optimizer):
         Returns:
         - loss (float or None): The loss value if the closure is provided; otherwise, None.
         """
+        # Skip the first step to compute the estimator first
         if self.first_step:
             self.first_step = False
-            return self.compute_estimator()
+            return None
+
         loss = None
         if closure is not None:
             loss = closure()
