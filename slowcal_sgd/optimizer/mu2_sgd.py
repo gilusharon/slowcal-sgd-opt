@@ -44,6 +44,7 @@ class Mu2SGD(Optimizer):
                 state['current_grad'] = torch.full_like(p.data, 0.)
                 state['correction_grad'] = torch.full_like(p.data, 0.)
 
+        self.first_step = True
         self.gamma = gamma
         self.projection_radius = projection_radius
         self.iter = 0
@@ -104,6 +105,9 @@ class Mu2SGD(Optimizer):
         Returns:
         - loss (float or None): The loss value if the closure is provided; otherwise, None.
         """
+        if self.first_step:
+            self.first_step = False
+            return self.compute_estimator()
         loss = None
         if closure is not None:
             loss = closure()
