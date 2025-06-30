@@ -40,7 +40,7 @@ def get_worker_optimizer(opt_args, opt_model):
     """Initializes the optimizer for a worker model."""
     # Configure optimizer and parameters
     match opt_args.optimizer:
-        case "LocalSGD", "MinibatchSGD":
+        case "LocalSGD" | "MinibatchSGD":
             optimizer = OPTIMIZER_REGISTRY["sgd"]
             hyperparameters = {
                 "lr": opt_args.learning_rate,

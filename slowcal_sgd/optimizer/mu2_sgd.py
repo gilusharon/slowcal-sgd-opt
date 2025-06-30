@@ -18,7 +18,7 @@ class Mu2SGD(Optimizer):
     - w (list): Deep copies of parameter groups for maintaining intermediate states during updates.
     """
 
-    def __init__(self, params, lr=required, weight_decay=0., momentum=0.9, gamma=0.9, use_alpha_t=False,
+    def __init__(self, params, lr=required, weight_decay=0., momentum=0.9, gamma=0.1, use_alpha_t=False,
                  use_beta_t=False, projection_radius=None):
         """
         Initializes the μ²-SGD optimizer.
